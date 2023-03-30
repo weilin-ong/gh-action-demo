@@ -6,3 +6,14 @@ jobs:
     steps:
       - name: Output Github context
         run: echo "${{ toJSON(github) }}"
+
+      - name: Get branch name
+        run: |
+            BRANCH_NAME=$(echo "${{ github.event.ref }}" | sed 's/.*\///')
+            if [ "$BRANCH_NAME" != "main" ]; then
+                BRANCH_NAME=$(echo "${{ github.event.ref }}" | sed 's/.*-//')
+            fi
+        
+            echo "BRANCH_NAME from github ref => $BRANCH_NAME"
+            echo "BRANCH_NAME=$BRANCH_NAME"
+            echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
